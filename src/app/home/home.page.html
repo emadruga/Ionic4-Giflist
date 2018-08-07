@@ -1,12 +1,39 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
+
     <ion-title>
-      Ionic Blank
+      <form [formGroup]="subredditForm">
+        <ion-searchbar class="subreddit-search" placeholder="enter subreddit name..." formControlName="subredditControl" value=""></ion-searchbar>
+      </form>
     </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openSettings()"><ion-icon slot="icon-only" name="settings"></ion-icon></ion-button>    
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>If you get lost, the <a target="_blank" href="https://ionicframework.com/docs">docs</a> will be your guide.</p>
+<ion-content>
+
+  <ion-list no-lines>
+
+    <div tappable (click)="playVideo($event, post)" *ngFor="let post of redditService.posts">
+      <ion-item>
+        <video loop [src]="post.data.url" [poster]="post.data.snapshot">
+        </video>
+      </ion-item>
+      <ion-list-header (click)="showComments(post)" style="text-align: left;">
+        <ion-label>{{post.data.title}}</ion-label>
+      </ion-list-header>
+    </div>
+
+    <ion-item *ngIf="redditService.loading" no-lines style="text-align: center;">
+      <ion-spinner name="lines-small"></ion-spinner>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-button color="light" expand="full" (click)="loadMore()" *ngIf="redditService.posts.length">Load More...</ion-button>
+
 </ion-content>
