@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DataService } from './data.service';
 
 import { map } from 'rxjs/operators';
@@ -148,6 +148,30 @@ export class RedditService {
       //Fail silently, in this case the loading spinner will just continue to display
       console.log("Can't find data!");
     });
+
+  }
+  saveApplicant(personData): void {
+
+      console.log("Saving " + personData);
+      
+      let url = 'http://localhost:8080/api/rooms/reserve';
+      let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
+      console.log("Using " + url);
+	
+      this.http.post(url,JSON.stringify(personData),
+		     {
+			 headers: hdrs,
+		     }
+                    ).subscribe(
+                        (res) => {
+			    
+                            console.log(res);
+
+                        },
+                        (err) => {
+                            console.log(err);
+                        }
+                    );
 
   }
 
