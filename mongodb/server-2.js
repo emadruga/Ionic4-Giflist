@@ -108,15 +108,37 @@ Room.count({}, function(err, count){
         });
  
     });
+
+   app.post('/api/rooms/insert', function(req, res) {
  
-    app.post('/api/rooms/reserve', function(req, res) {
- 
-        console.log("Server: " + req.body._id);
+        console.log("Server: " + req.body.cpf);
 
 	var from_str = "2018-09-15";
 	var to_str   = "2018-09-25";
  
-        Room.findByIdAndUpdate(req.body._id, {
+        Room.findByIdAndUpdate(req.body.cpf, {
+            $push: {"reserved": {from: from_str, to: to_str}}
+        }, {
+            safe: true,
+            new: true
+        }, function(err, room){
+            if(err){
+                res.send(err);
+            } else {
+                res.json(room);
+            }
+        });
+ 
+    });
+
+    app.post('/api/rooms/reserve', function(req, res) {
+ 
+        console.log("Server: " + req.body.cpf);
+
+	var from_str = "2018-09-15";
+	var to_str   = "2018-09-25";
+ 
+        Room.findByIdAndUpdate(req.body.cpf, {
             $push: {"reserved": {from: from_str, to: to_str}}
         }, {
             safe: true,
