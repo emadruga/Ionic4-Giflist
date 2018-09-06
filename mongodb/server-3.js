@@ -17,17 +17,16 @@ app.use(cors());
 // Models
 var Room = mongoose.model('Room', {
     nome_completo:  String,
-    data_nasc:      req.body.data_nasc,
-    rg_identidade:  req.body.rg_identidade, 
-    cpf:	           req.body.cpf,
-    sexo:	   req.body.sexo,	    
-    email:	   req.body.email,	    
-    cidade:	   req.body.cidade,	    
-    cep:	           req.body.cep,	    
-    telefone:	   req.body.telefone,	    
-    deficiencia:    req.body.deficiencia,    
-
-    cotista:        req.body.cotista         
+    data_nasc:      String,
+    rg_identidade:  String,
+    cpf:	    String,
+    sexo:	    String,
+    email:	    String,
+    cidade:	    String,
+    cep:	    String,
+    telefone:	    String,
+    deficiencia:    String,
+    cotista:        String  
 });
  
 /*
@@ -63,11 +62,11 @@ app.post('/api/person', function(req, res) {
 
    app.post('/api/rooms/insert', function(req, res) {
  
-       console.log("Inserting: " + req.body.cpf);
+       console.log("Inserting: " + req.body.cpf );
 
        var newPerson = new Room({
  	   nome_completo:  req.body.nome_completo,
-	   data_nasc:      req.body.data_nasc,
+	   /* data_nasc:      req.body.data_nasc, */
 	   rg_identidade:  req.body.rg_identidade, 
 	   cpf:	           req.body.cpf,
 	   sexo:	   req.body.sexo,	    
@@ -82,9 +81,11 @@ app.post('/api/person', function(req, res) {
        newPerson.save(function(err, doc){
 	   if (err) {
 	       console.log("Server Insert Error: " + err);
+	       res.send(err);
 	   }
 	       
            console.log("Created person: " + doc.cpf);
+	   res.json(doc);
        });
  
     });
